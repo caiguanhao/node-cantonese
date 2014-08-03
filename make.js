@@ -1,35 +1,56 @@
-var Q = require('q');
-var fs = require('fs');
-var http = require('http');
-var path = require('path');
+#!/usr/bin/env node
+var Q           = require('q');
+var fs          = require('fs');
+var http        = require('http');
+var path        = require('path');
 var charSpinner = require('char-spinner');
 var querystring = require('querystring');
+
 var MIN = 19968, MAX = 40907, CONCURRENT = 5;
 var Can2Latin = path.join(__dirname, 'dict', 'can2latin.js');
 
-charSpinner();
+var opts = process.argv.slice(2);
+if (opts.length === 0) return getHelp();
+var action = opts[0];
 
-var rangePromises = makeRanges(MIN, MAX, CONCURRENT).map(function(range) {
-  var chars = charsRange(range.min, range.max);
-  return request(chars);
-});
+if (action === 'get-chars') {
+  getChars();
+} else {
+  getHelp();
+  process.exit(1);
+}
 
-Q.
-all(rangePromises).
-then(function(allContent) {
-  var obj = {};
-  for (var i = 0; i < allContent.length; i++) {
-    parse(allContent[i], obj);
-  }
-  var chars = {};
-  try { chars = require(Can2Latin); } catch(e) {}
-  for (var ch in chars) {
-    if (!obj[ch]) obj[ch] = chars[ch];
-  }
-  var str = stringify(obj);
-  fs.writeFileSync(Can2Latin, str);
-}).
-catch(console.error);
+function getHelp() {
+  var l = console.log;
+  l('Usage: ' + path.basename(process.argv[1]) + ' [ACTION]');
+  l();
+  l('Actions:');
+  l('  get-chars        get cantonese to latins data from kawa.net');
+}
+
+function getChars() {
+  charSpinner();
+  var rangePromises = makeRanges(MIN, MAX, CONCURRENT).map(function(range) {
+    var chars = charsRange(range.min, range.max);
+    return request(chars);
+  });
+  Q.
+  all(rangePromises).
+  then(function(allContent) {
+    var obj = {};
+    for (var i = 0; i < allContent.length; i++) {
+      parse(allContent[i], obj);
+    }
+    var chars = {};
+    try { chars = require(Can2Latin); } catch(e) {}
+    for (var ch in chars) {
+      if (!obj[ch]) obj[ch] = chars[ch];
+    }
+    var str = stringify(obj);
+    fs.writeFileSync(Can2Latin, str);
+  }).
+  catch(console.error);
+}
 
 function request(content) {
   var deferred = Q.defer();
