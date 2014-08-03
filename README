@@ -1,17 +1,37 @@
-node-cantonese
-==============
+cantonese
+=========
 
-```
-npm i cantonese
-```
+Cantonese romanization. Cantonese to Latin conversion.
+Supports Traditional and Simplified Chinese characters.
 
-Usage:
+Install via npm:
 
-```js
+    npm i cantonese
+
+
+The Cantonese pronunciation data are from www.kawa.net.
+Please note that not all Chinese characters have corresponding
+pronunciations in Cantonese.
+
+
+Usage
+-----
+
+* Function toLatin ( <string> a Chinese character ) returns Array
+
+  Returns possible pronunciations of a Chinese character in Cantonese.
+
+* Function fromLatin ( <string> a Latin word ) returns Array
+
+  Returns all Chinese characters with specific pronunciation in Cantonese.
+
+
+Example
+-------
+
 var cantonese = require('cantonese');
 console.log(cantonese.toLatin('長')); // [ 'cheung', 'jeung' ]
 console.log(cantonese.fromLatin('cheung'));
 // [ '倡', '呛', '唱', '嗆', '场', '場', '墙', '娼', '戕', '抢',
 //   '搶', '昌', '暢', '枪', '槍', '牆', '猖', '畅', '祥', '窗',
 //   '翔', '肠', '腸', '蔷', '薔', '詳', '详', '長', '长' ]
-```

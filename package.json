@@ -1,7 +1,7 @@
 {
-  "name": "node-cantonese",
+  "name": "cantonese",
   "version": "0.0.0",
-  "description": "Cantonese romanization.",
+  "description": "Cantonese romanization. Cantonese to Latin conversion.",
   "main": "cantonese.js",
   "repository": {
     "type": "git",
@@ -9,9 +9,11 @@
   },
   "keywords": [
     "cantonese",
-    "romanization"
+    "romanization",
+    "latin",
+    "conversion"
   ],
-  "author": "Cai Guanhao (Choi Goon-ho)",
+  "author": "Cai Guanhao (Choi Goon-ho) <caiguanhao@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/caiguanhao/node-cantonese/issues"
@@ -20,5 +22,10 @@
   "devDependencies": {
     "char-spinner": "^1.0.1",
     "q": "^1.0.1"
-  }
+  },
+  "files": [
+    "dict",
+    "cantonese.js",
+    "README"
+  ]
 }
