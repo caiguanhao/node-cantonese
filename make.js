@@ -68,7 +68,8 @@ function parse(content, obj) {
       var match = /^<span\stitle="(.*)">(.*)<\/span>$/.exec(matches[i]);
       var code = match[2].charCodeAt();
       if (code < MIN || code > MAX) continue;
-      obj[code] = match[1].split('/');
+      var latins = match[1].split('/');
+      obj[code] = removeDuplicates(latins);
     }
   }
   return obj;
@@ -104,4 +105,18 @@ function charsRange(min, max) {
     chars += String.fromCharCode(i);
   }
   return chars;
+}
+
+function removeDuplicates(array) {
+  var toRemove = [];
+  for (var i = 0; i < array.length; i++) {
+    for (var j = 0; i !== j && j < array.length; j++) {
+      if (!/[a-zA-Z]/.test(array[i].replace(array[j], ''))) {
+        toRemove.push(array[i]);
+      }
+    }
+  }
+  return array.filter(function(item) {
+    return toRemove.indexOf(item) === -1;
+  });
 }
