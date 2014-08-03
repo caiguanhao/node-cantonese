@@ -9,5 +9,9 @@ Usage:
 
 ```js
 var cantonese = require('cantonese');
-console.log(cantonese.toLatin('长'));
+console.log(cantonese.toLatin('長')); // [ 'cheung', 'jeung' ]
+console.log(cantonese.fromLatin('cheung'));
+// [ '倡', '呛', '唱', '嗆', '场', '場', '墙', '娼', '戕', '抢',
+//   '搶', '昌', '暢', '枪', '槍', '牆', '猖', '畅', '祥', '窗',
+//   '翔', '肠', '腸', '蔷', '薔', '詳', '详', '長', '长' ]
 ```
