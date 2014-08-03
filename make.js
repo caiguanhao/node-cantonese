@@ -8,6 +8,7 @@ var querystring = require('querystring');
 
 var MIN = 19968, MAX = 40907, CONCURRENT = 5;
 var Can2Latin = path.join(__dirname, 'dict', 'can2latin.js');
+var Latin2Can = path.join(__dirname, 'dict', 'latin2can.js');
 
 var opts = process.argv.slice(2);
 if (opts.length === 0) return getHelp();
@@ -15,6 +16,8 @@ var action = opts[0];
 
 if (action === 'get-chars') {
   getChars();
+} else if (action === 'latin2can') {
+  makeLatin2Can();
 } else {
   getHelp();
   process.exit(1);
@@ -26,6 +29,7 @@ function getHelp() {
   l();
   l('Actions:');
   l('  get-chars        get cantonese to latins data from kawa.net');
+  l('  latin2can        make latin2can.js');
 }
 
 function getChars() {
@@ -140,4 +144,36 @@ function removeDuplicates(array) {
   return array.filter(function(item) {
     return toRemove.indexOf(item) === -1;
   });
+}
+
+function sortObject(obj) {
+  var keys = Object.keys(obj);
+  keys.sort();
+  var newobj = {};
+  for (var i = 0; i < keys.length; i++) {
+    newobj[keys[i]] = obj[keys[i]];
+  }
+  return newobj;
+}
+
+function makeLatin2Can() {
+  var chars = {};
+  try { chars = require(Can2Latin); } catch(e) {}
+  var obj = {}, itemMaxLen = 0;
+  for (var ch in chars) {
+    for (var index in chars[ch]) {
+      var item = chars[ch][index];
+      obj[item] = obj[item] || [];
+      obj[item].push(+ch);
+      if (item.length > itemMaxLen) itemMaxLen = item.length;
+    }
+  }
+  var sorted = sortObject(obj);
+  var str = JSON.stringify(sorted);
+  str = str.replace(/"([a-z]+)"/g, function(s, $1) {
+    return '\n  ' + $1 + Array(itemMaxLen - $1.length + 2).join(' ');
+  }).replace(/"/g, '\'').replace(/:\[/g, ': [');
+  str = 'module.exports = ' + str + ';';
+  str = str.replace('};', '\n};\n');
+  fs.writeFileSync(Latin2Can, str);
 }
