@@ -1,0 +1,13 @@
+node-cantonese
+==============
+
+```
+npm i cantonese
+```
+
+Usage:
+
+```js
+var cantonese = require('cantonese');
+console.log(cantonese.toLatin('长'));
+```

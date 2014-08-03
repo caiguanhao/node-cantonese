@@ -1,0 +1,24 @@
+{
+  "name": "node-cantonese",
+  "version": "0.0.0",
+  "description": "Cantonese romanization.",
+  "main": "cantonese.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caiguanhao/node-cantonese.git"
+  },
+  "keywords": [
+    "cantonese",
+    "romanization"
+  ],
+  "author": "Cai Guanhao (Choi Goon-ho)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caiguanhao/node-cantonese/issues"
+  },
+  "homepage": "https://github.com/caiguanhao/node-cantonese",
+  "devDependencies": {
+    "char-spinner": "^1.0.1",
+    "q": "^1.0.1"
+  }
+}
